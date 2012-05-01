@@ -1,0 +1,769 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<application
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://wadl.dev.java.net/2009/02 wadl.xsd"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:si="http://www.physics.nist.gov/cuu/Units/index.html"
+		xmlns:x="urn:ito:xwadl"
+		xmlns="http://wadl.dev.java.net/2009/02">
+
+	<doc>
+		DatingSystem REST API
+	</doc>
+
+	<resources base="//api.lv.local">
+		<resource path="member">
+			<doc>
+				Аккаунт
+			</doc>
+			<method name="GET">
+				<doc>
+					Получение информации об аккаунте
+				</doc>
+				<response status="200">
+					<representation id="member">
+						<param name="id" type="xsd:string"/>
+						<param name="name" type="xsd:string"/>
+						<param name="surname" type="xsd:string"/>
+						<param name="email" type="xsd:string"/>
+						<param name="gender" type="xsd:int"/>
+						<param name="country" type="xsd:string"/>
+						<param name="born" type="xsd:int"/>
+					</representation>
+				</response>
+			</method>
+			<method name="PUT" x:alias="register" x:public="true">
+				<doc>
+					Регистрация пользователя
+				</doc>
+				<request>
+					<param name="first-name" type="xsd:string" required="true">
+						<doc>
+							Имя
+						</doc>
+						<xsd:minLength value="3"/>
+						<xsd:maxLength value="50"/>
+					</param>
+					<param name="last-name" type="xsd:string" required="true">
+						<doc>
+							Фамилия
+						</doc>
+						<xsd:minLength value="3"/>
+						<xsd:maxLength value="50"/>
+					</param>
+					<param name="email" type="xsd:string" required="true">
+						<doc>
+							Email
+						</doc>
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</param>
+					<param name="gender" type="xsd:int" required="true">
+						<doc>
+							Пол
+						</doc>
+						<option value="1">
+							<doc>
+								Male
+							</doc>
+						</option>
+						<option value="2">
+							<doc>
+								Female
+							</doc>
+						</option>
+					</param>
+					<param name="password" type="xsd:string" required="true">
+						<doc>
+							Пароль
+						</doc>
+						<xsd:minLength value="6"/>
+						<xsd:maxLength value="16"/>
+					</param>
+					<param name="birth-date" type="xsd:int" required="true">
+						<doc>
+							Дата рождения
+						</doc>
+					</param>
+					<param name="country" type="xsd:ID" required="true" path="/countries"/>
+					<param name="city" type="xsd:string" required="true">
+						<doc>
+							Город
+						</doc>
+					</param>
+				</request>
+				<response status="201">
+					<representation>
+						<param name="id" type="xsd:string" required="true">
+							<doc>
+								Идентификатор зарегистрированного пользователя
+							</doc>
+						</param>
+						<param name="ut" type="xsd:string" style="header" required="true">
+							<doc>
+								Ключ авторизации пользователя
+							</doc>
+						</param>
+					</representation>
+				</response>
+				<response status="400">
+					<doc>
+						Ошибка пользователя
+						Данное описание ответа с кодом 400 является общим для всех запросов и далее будет опущено
+					</doc>
+					<representation id="error">
+						<param name="code" type="xsd:int" required="false">
+							<doc>
+								Код ошибки
+								Пока не используется
+							</doc>
+						</param>
+						<param name="src" type="xsd:string" required="false">
+							<doc>
+								Имя параметра запроса, ставшим источником ошибки
+							</doc>
+						</param>
+						<param name="desc" type="xsd:string" required="true">
+							<doc>
+								Словестное описание ошибки
+								Предпочитаемый язык текста определяется заголовком запроса Accept-Language
+							</doc>
+						</param>
+						<param name="details" type="xsd:string" required="false">
+							<doc>
+								Расширенное словестное описание ошибки
+								Пока не используется
+							</doc>
+						</param>
+					</representation>
+				</response>
+			</method>
+			<resource path="profile">
+				<doc>
+					Профиль
+				</doc>
+				<method name="GET">
+					<doc>
+						Получение информации о профиле
+					</doc>
+					<response status="200">
+						<representation id="profile">
+							<param name="occupation" type="xsd:string"/>
+							<param name="education" type="xsd:ID" path="/profile/educations"/>
+							<param name="languages" type="xsd:string" repeating="true"/>
+							<param name="religion" type="xsd:ID" path="/profile/religions"/>
+							<param name="martial" type="xsd:ID" path="/profile/martials"/>
+							<param name="children" type="xsd:boolean"/>
+							<param name="height" type="xsd:int"/>
+							<param name="weight" type="xsd:int"/>
+							<param name="eye" type="xsd:ID" path="/profile/eyes"/>
+							<param name="hair" type="xsd:ID" path="/profile/hairs"/>
+							<param name="drinking" type="xsd:ID" path="/profile/drininks"/>
+							<param name="smoking" type="xsd:boolean"/>
+							<param name="about" type="xsd:string"/>
+							<param name="interests" type="xsd:string"/>
+							<param name="photos" type="xsd:string" repeating="true"/>
+						</representation>
+					</response>
+				</method>
+				<method name="PUT">
+					<doc>
+						Сохранение профиля
+					</doc>
+					<request>
+						<param name="occupation" type="xsd:string">
+							<xsd:maxLength value="64"/>
+						</param>
+						<param name="education" type="xsd:ID" path="/profile/educations"/>
+						<param name="languages" type="xsd:string" repeating="true">
+							<xsd:maxLength value="64"/>
+						</param>
+						<param name="religion" type="xsd:ID" path="/profile/religions"/>
+						<param name="martial" type="xsd:ID" path="/profile/martials"/>
+						<param name="children" type="xsd:boolean"/>
+						<param name="height" type="xsd:int">
+							<si:unit name="cm"/>
+						</param>
+						<param name="weight" type="xsd:int">
+							<si:unit name="kg"/>
+						</param>
+						<param name="eye" type="xsd:ID" path="/profile/eyes"/>
+						<param name="hair" type="xsd:ID" path="/profile/hairs"/>
+						<param name="drinking" type="xsd:ID" path="/profile/drininks"/>
+						<param name="smoking" type="xsd:boolean"/>
+						<param name="about" type="xsd:string">
+							<xsd:maxLength value="4000"/>
+						</param>
+						<param name="interests" type="xsd:string">
+							<xsd:maxLength value="4000"/>
+						</param>
+						<param name="photos" type="xsd:string" repeating="true" required="true">
+							<doc>
+								Список ссылок на фотограции.
+								Требуется минимум одна, которая будет использована в качестве thumbnail.
+							</doc>
+						</param>
+					</request>
+					<response status="204"/>
+				</method>
+			</resource>
+			<resource path="preferences">
+				<doc>
+					Предпочтения
+				</doc>
+				<method name="GET">
+					<doc>
+						Получение списка предпочтений
+					</doc>
+					<response status="200">
+						<representation id="preferences">
+							<param name="min-age" type="xsd:int"/>
+							<param name="max-age" type="xsd:int"/>
+							<param name="min-height" type="xsd:int"/>
+							<param name="max-height" type="xsd:int"/>
+							<param name="min-weight" type="xsd:int"/>
+							<param name="max-weight" type="xsd:int"/>
+							<param name="children" type="xsd:boolean"/>
+							<param name="about" type="xsd:string"/>
+						</representation>
+					</response>
+				</method>
+				<method name="PUT">
+					<doc>
+						Сохранение предпочтений
+					</doc>
+					<request>
+						<param name="min-age" type="xsd:int">
+							<xsd:minInclusive value="18"/>
+							<xsd:maxExclusive value="80"/>
+						</param>
+						<param name="max-age" type="xsd:int">
+							<xsd:minInclusive value="18"/>
+							<xsd:maxExclusive value="80"/>
+						</param>
+						<param name="min-height" type="xsd:int">
+							<si:unit name="cm"/>
+							<xsd:minInclusive value="135"/>
+							<xsd:maxExclusive value="180"/>
+						</param>
+						<param name="max-height" type="xsd:int">
+							<si:unit name="cm"/>
+							<xsd:minInclusive value="135"/>
+							<xsd:maxExclusive value="180"/>
+						</param>
+						<param name="min-weight" type="xsd:int">
+							<si:unit name="kg"/>
+						</param>
+						<param name="max-weight" type="xsd:int">
+							<si:unit name="kg"/>
+						</param>
+						<param name="children" type="xsd:boolean"/>
+						<param name="about" type="xsd:string">
+							<xsd:maxLength value="255"/>
+						</param>
+					</request>
+					<response status="204"/>
+				</method>
+			</resource>
+			<resource path="reminders">
+				<doc>
+					Напоминание пароля
+				</doc>
+				<method name="POST" x:alias="remind" x:public="true">
+					<request>
+						<param name="identity" type="xsd:string" required="true">
+							<doc>
+								Идентификатор пользователя или email
+							</doc>
+							<xsd:minLength value="1"/>
+							<xsd:maxLength value="255"/>
+						</param>
+						<param name="type" default="password" type="xsd:string">
+							<doc>
+								Тип напоминания
+							</doc>
+							<option value="password"/>
+						</param>
+					</request>
+					<response status="202"/>
+				</method>
+			</resource>
+			<resource path="token" x:secure="true">
+				<method name="GET">
+					<doc>
+						Получение ключей аутентификации и авторизации пользователя
+					</doc>
+					<request>
+						<param name="identity" type="xsd:string" required="true">
+							<doc>
+								Идентификатор пользователя или email
+							</doc>
+							<xsd:minLength value="1"/>
+							<xsd:maxLength value="255"/>
+						</param>
+						<param name="password" type="xsd:string" required="true">
+							<xsd:minLength value="6"/>
+							<xsd:maxLength value="16"/>
+						</param>
+					</request>
+					<response status="204">
+						<representation>
+							<param name="ut" type="xsd:string" style="header" required="true">
+								<doc>
+									Аутентификационный ключ (user token)
+									Передается через HTTP Cookie
+								</doc>
+							</param>
+							<param name="x-security-token" type="xsd:string" style="header" required="true">
+								<doc>
+									Авторизационный ключ
+									Передается в заголовке X-Security-Token
+								</doc>
+							</param>
+						</representation>
+					</response>
+				</method>
+			</resource>
+		</resource>
+		<resource path="contacts">
+			<doc>
+				Контакты
+			</doc>
+			<method name="POST">
+				<doc>
+					Добавление контакта
+				</doc>
+				<request>
+					<param name="id" type="xsd:string" required="true"/>
+					<param name="comment" type="xsd:string">
+						<doc>
+							Примечание к контакту
+						</doc>
+						<xsd:maxLength value="255"/>
+					</param>
+				</request>
+				<response status="204"/>
+			</method>
+			<resource path="{id}" type="transparent">
+				<doc>
+					Операции с контактом
+				</doc>
+				<param name="id" type="xsd:int" style="template"/>
+				<method name="PUT">
+					<doc>
+						Добавление или изменение контакта
+					</doc>
+					<request>
+						<param name="comment" type="xsd:string">
+							<xsd:maxLength value="255"/>
+						</param>
+					</request>
+					<response status="204"/>
+				</method>
+				<method name="DELETE">
+					<doc>
+						Удаление контакта
+					</doc>
+					<response status="204"/>
+				</method>
+			</resource>
+			<resource path="lockups">
+				<method name="POST">
+					<doc>
+						Блокировка пользователя
+					</doc>
+					<request>
+						<param name="id" type="xsd:string" required="true"/>
+					</request>
+				</method>
+				<resource path="{id}" type="transparent">
+					<param name="id" type="xsd:string" style="template" required="true"/>
+					<method name="DELETE">
+						<doc>
+							Снятие блокировки с пользователя
+						</doc>
+					</method>
+				</resource>
+			</resource>
+		</resource>
+		<resource path="accounts">
+			<doc>
+				Финансовые операции
+			</doc>
+			<resource path="outlay">
+				<method name="GET">
+					<doc>
+						История операций
+					</doc>
+					<request>
+						<!-- уточнить значение по умолчанию -->
+						<param name="omit" type="xsd:int" default="0">
+							<doc>
+								Количество записей, которое необходимо пропустить
+							</doc>
+						</param>
+						<param name="select" type="xsd:int" default="100">
+							<doc>
+								Количество записей, который необходимо вернуть
+							</doc>
+						</param>
+						<param name="min-date" type="xsd:int"/>
+						<param name="max-date" type="xsd:int"/>
+					</request>
+					<response status="200">
+						<representation id="payments">
+							<xsd:list>
+								<param name="timestamp" type="xsd:int" required="true">
+									<doc>
+										Время операции
+									</doc>
+								</param>
+								<param name="reason" type="xsd:ID" required="true" path="/outlay">
+									<doc>
+										Причина изменения баланса
+									</doc>
+								</param>
+								<param name="arguments" type="xsd:any">
+									<doc>
+										Дополнительные аргументы причины изменения баланса
+									</doc>
+								</param>
+								<param name="quantity" type="xsd:int" required="true">
+									<doc>
+										Изменнеия баланса
+									</doc>
+								</param>
+							</xsd:list>
+						</representation>
+					</response>
+				</method>
+				<method name="POST" x:alias="purchase">
+					<doc>
+						Покупка кредитов
+					</doc>
+					<request>
+						<param name="package" type="xsd:int" required="true">
+							<doc>
+								Идентификатор пакета кредитов из прайс-листа
+							</doc>
+						</param>
+
+						<doc title="Данные кредитной карты">
+							Являются необязательными, если в системе уже есть данные кредитной карты пользователя
+						</doc>
+						<!-- необходимо уточнить ограничения для этих полей -->
+						<param name="cardholder" type="xsd:string" required="true">
+							<doc>
+								Имя владельца карты
+							</doc>
+							<xsd:maxLength value="255"/>
+						</param>
+						<param name="number" type="xsd:string" required="true">
+							<doc>
+								Номер карты
+							</doc>
+							<xsd:minLength value="16"/>
+							<xsd:maxLength value="64"/>
+						</param>
+						<param name="expidation" type="xsd:int" required="true">
+							<doc>
+								Дата истечения срока действия карты
+							</doc>
+						</param>
+						<param name="verification" type="xsd:int" required="true">
+							<doc>
+								Верификационный номер
+							</doc>
+							<xsd:maxLength value="4"/>
+						</param>
+
+						<doc>
+							Адрес плательщика
+						</doc>
+						<param name="street" type="xsd:string" required="true">
+							<doc>
+								Улица
+							</doc>
+							<xsd:maxLength value="255"/>
+						</param>
+						<param name="country" type="xsd:ID" path="/countries" required="true"/>
+						<param name="state" type="xsd:string">
+							<doc>
+								Шатат или провинция
+								Поле обязательно для США и Канады
+							</doc>
+							<xsd:maxLength value="64"/>
+						</param>
+						<param name="zip" type="xsd:int">
+							<doc>
+								Почтовый индекс
+							</doc>
+							<xsd:maxLength value="32"/>
+						</param>
+						<param name="city" type="xsd:string" required="true">
+							<doc>
+								Город
+							</doc>
+							<xsd:maxLength value="128"/>
+						</param>
+					</request>
+					<response status="204"/>
+				</method>
+			</resource>
+			<resource path="card">
+				<method name="GET">
+					<response status="200">
+						<representation id="credit-card">
+							<param name="cardholder" type="xsd:string" required="true"/>
+							<param name="number" type="xsd:string" required="true">
+								<doc>
+									Номер кредитной карты частично заменен спецсимволами
+								</doc>
+							</param>
+							<param name="expidation" type="xsd:int" required="true"/>
+							<param name="verification" type="xsd:int" required="true"/>
+							<param name="street" type="xsd:string" required="true"/>
+							<param name="country" type="xsd:string" required="true"/>
+							<param name="state" type="xsd:string" required="true"/>
+							<param name="zip" type="xsd:int"/>
+							<param name="city" type="xsd:string" required="true"/>
+						</representation>
+					</response>
+				</method>
+			</resource>
+			<resource path="ballance">
+				<method name="GET">
+					<response status="200">
+						<representation>
+							<param name="ballance" type="xsd:int" required="true"/>
+						</representation>
+					</response>
+				</method>
+			</resource>
+		</resource>
+		<resource path="members" x:public="true">
+			<doc>
+				Поиск участников
+			</doc>
+			<method name="GET" x:alias="search">
+				<request>
+					<doc>
+						Описания и ограничения значений см. в PUT /profile/
+					</doc>
+					<param name="gender" type="xsd:int"/>
+					<param name="min-age" type="xsd:int"/>
+					<param name="max-age" type="xsd:int"/>
+					<param name="min-height" type="xsd:int"/>
+					<param name="max-height" type="xsd:int"/>
+					<param name="min-weight" type="xsd:int"/>
+					<param name="max-weight" type="xsd:int"/>
+					<param name="children" type="xsd:boolean"/>
+					<param name="smoking" type="xsd:boolean"/>
+					<param name="drinking" type="xsd:ID" path="/profile/drinkings"/>
+					<param name="religion" type="xsd:ID" path="/profile/religions"/>
+					<param name="eye" type="xsd:ID" path="/profile/eyes"/>
+					<param name="hair" type="xsd:ID" path="/profile/hairs"/>
+
+					<doc>
+						Описания и ограничения значений см. в POST /member/
+					</doc>
+					<param name="country" type="xsd:string"/>
+					<param name="city" type="xsd:string"/>
+
+					<doc>
+						Дополнительные параметры
+					</doc>
+					<param name="filter" type="xsd:string" repeating="true">
+						<option value="photos">
+							<doc>
+								Только участников с фотографиями
+							</doc>
+						</option>
+						<option value="online">
+							<doc>
+								Только участников онлайн
+							</doc>
+						</option>
+						<option value="birthdays">
+							<doc>
+								Только участников с наступающим днем рождения
+							</doc>
+						</option>
+						<option value="contacts">
+							<doc>
+								Только участников из контакт-листа
+								Значение будет проигнорировано, если в запросе не передан ключ аутентификации
+							</doc>
+						</option>
+					</param>
+					<param name="zodiac" type="xsd:ID" path="/profile/zodiac" repeating="true">
+						<doc>
+							Только участники указанных знаков зодиака
+						</doc>
+						<!-- нужно уточнить порядок -->
+						<option value="1">
+							<doc>
+								Capricorn
+							</doc>
+						</option>
+						<option value="2">
+							<doc>
+								Aquarius
+							</doc>
+						</option>
+						<option value="3">
+							<doc>
+								Pisces
+							</doc>
+						</option>
+						<option value="4">
+							<doc>
+								Aries
+							</doc>
+						</option>
+						<option value="5">
+							<doc>
+								Taurus
+							</doc>
+						</option>
+						<option value="6">
+							<doc>
+								Gemini
+							</doc>
+						</option>
+						<option value="7">
+							<doc>
+								Cancer
+							</doc>
+						</option>
+						<option value="8">
+							<doc>
+								Leo
+							</doc>
+						</option>
+						<option value="9">
+							<doc>
+								Virgo
+							</doc>
+						</option>
+						<option value="10">
+							<doc>
+								Libra
+							</doc>
+						</option>
+						<option value="11">
+							<doc>
+								Scorpio
+							</doc>
+						</option>
+						<option value="12">
+							<doc>
+								Sagittarius
+							</doc>
+						</option>
+					</param>
+				</request>
+			</method>
+		</resource>
+		<resource path="talks/{id}" x:alias="chat">
+			<param name="id" type="xsd:int" style="template" required="true"/>
+			<method name="POST" x:alias="send">
+				<doc>
+					Отправка сообщения
+				</doc>
+				<request>
+					<param name="tag" type="xsd:string" required="false">
+						<doc>
+							Метка сообщения
+						</doc>
+						<xsd:maxLength value="16"/>
+					</param>
+					<param name="text" type="xsd:text" required="true">
+						<doc>
+							Текст сообщения
+						</doc>
+						<xsd:maxLength value="140"/>
+					</param>
+					<param name="source" type="xsd:string">
+						<doc>
+							Буквенный код приложения — источника сообщения
+						</doc>
+						<option value="lc">
+							<doc>
+								LiveChat
+							</doc>
+						</option>
+					</param>
+				</request>
+			</method>
+			<method name="DELETE" x:alias="end">
+				<doc>
+					Окончание чата или отклонение приглашения
+				</doc>
+				<response status="204"/>
+			</method>
+			<resource path="typing">
+				<method name="PUT">
+					<doc>
+						Состояние набора текста
+						При отправке сообщения, состояние автоматически переходит в 0
+					</doc>
+					<request>
+						<param name="state" type="xsd:int" default="0">
+							<option value="0">
+								<doc>
+									Не печатаю
+								</doc>
+							</option>
+							<option value="1">
+								<doc>
+									Печатаю
+								</doc>
+							</option>
+							<option value="2">
+								<doc>
+									Напечатал, но не отправил
+								</doc>
+							</option>
+						</param>
+					</request>
+					<response status="204"/>
+				</method>
+			</resource>
+		</resource>
+		<resource path="data/{uri}" x:alias="data" type="dictionary" x:public="true">
+			<doc>
+				Справочники
+			</doc>
+
+			<param name="uri" type="xsd:string" style="template" required="false"/>
+
+			<method name="GET">
+				<doc>
+					Допустимы только GET-запросы
+				</doc>
+			</method>
+		</resource>
+	</resources>
+
+	<resource_type id="dictionary">
+		<doc>
+			Описание структуры справочников
+		</doc>
+
+		<resource path="countries">
+			<doc>
+				Ключами справочника являются идентификаторы стран ISO 3166-1 alpha-2
+			</doc>
+		</resource>
+		<resource path="outlay"/>
+		<resource path="profile">
+			<resource path="religions"/>
+			<resource path="martials"/>
+			<resource path="eyes"/>
+			<resource path="hairs"/>
+			<resource path="driking"/>
+			<resource path="zodiac"/>
+		</resource>
+	</resource_type>
+</application>
