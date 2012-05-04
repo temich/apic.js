@@ -55,7 +55,7 @@
 			<xsl:text>*</xsl:text>
 		</xsl:if>
 		<xsl:for-each select="ancestor::wadl:resource/wadl:param">
-			<xsl:text>#\\</xsl:text>
+			<xsl:text>#/</xsl:text>
 			<xsl:value-of select="@name"/>
 		</xsl:for-each>
 		<xsl:for-each select="wadl:request/wadl:param[@required='true']">
