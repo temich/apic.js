@@ -48,12 +48,22 @@
 		<xsl:apply-templates select="wadl:resource"/>
 	</xsl:template>
 
+	<xsl:template match="wadl:resource[@type='x:events']">
+	</xsl:template>
+
 	<xsl:template match="wadl:method">
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="@name"/>
-		<xsl:if test="@x:secure='true' or parent::wadl:resource/@x:secure='true'">
-			<xsl:text>*</xsl:text>
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="ancestor-or-self::wadl:resource/@x:secure='true'">
+				<xsl:text>*</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:if test="not(@name='GET')">
+					<xsl:text>*</xsl:text>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:for-each select="ancestor::wadl:resource/wadl:param">
 			<xsl:text>#/</xsl:text>
 			<xsl:value-of select="@name"/>
@@ -98,7 +108,6 @@
 	</xsl:template>
 
 	<xsl:template name="argument">
-
 	</xsl:template>
 
 </xsl:stylesheet>
