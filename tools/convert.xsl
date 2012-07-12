@@ -64,24 +64,9 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:for-each select="ancestor::wadl:resource/wadl:param">
-			<xsl:text>#/</xsl:text>
-			<xsl:value-of select="@name"/>
-		</xsl:for-each>
-		<xsl:for-each select="wadl:request/wadl:param[@required='true']">
-			<xsl:text>#</xsl:text>
-			<xsl:value-of select="@name"/>
-		</xsl:for-each>
+		<xsl:apply-templates select="ancestor::wadl:resource/wadl:param|wadl:request/wadl:param[@required='true']"/>
 		<xsl:text>":"</xsl:text>
-		<xsl:choose>
-			<xsl:when test="wadl:response/wadl:representation[@id != '' and @id != 'error']/@id">
-				<xsl:value-of select="wadl:response/wadl:representation[@id != '' and @id != 'error']/@id"/>
-			</xsl:when>
-			<xsl:when test="wadl:response/wadl:representation[1]/wadl:param[@required='true']">
-				<xsl:value-of
-						select="wadl:response/wadl:representation[1]/wadl:param[1][@required = 'true' and @style != 'header']/@name"/>
-			</xsl:when>
-		</xsl:choose>
+		<xsl:apply-templates select="wadl:response[substring(@status, 1, 1)='2']/wadl:representation"/>
 		<xsl:text>"</xsl:text>
 		<xsl:if test="@x:alias">
 			<xsl:text>,":</xsl:text>
@@ -91,6 +76,38 @@
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 		<xsl:if test="following-sibling::*">,</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="wadl:representation[@id and @id != 'error']">
+		<xsl:value-of select="@id"/>
+		<xsl:apply-templates select="wadl:param[@x:variable]"/>
+	</xsl:template>
+
+	<xsl:template match="wadl:representation[not(@id)]">
+		<xsl:value-of select="wadl:param[@required='true' and not(@style='header')]/@name"/>
+		<xsl:apply-templates select="wadl:param[@x:variable]"/>
+	</xsl:template>
+
+	<xsl:template match="wadl:representation/wadl:param[@x:variable]">
+		<xsl:text>=</xsl:text>
+		<xsl:value-of select="@x:variable"/>
+	</xsl:template>
+
+	<xsl:template match="wadl:param">
+		<xsl:text>#</xsl:text>
+		<xsl:if test="@style='template'">/</xsl:if>
+		<xsl:choose>
+			<xsl:when test="substring(@default, 1, 1)='{' and substring(@default, string-length(@default))='}'">
+				<xsl:text>{</xsl:text>
+				<xsl:value-of select="@name"/>
+				<xsl:text>=</xsl:text>
+				<xsl:value-of select="substring(@default, 2, string-length(@default)-2)"/>
+				<xsl:text>}</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@name"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="name">
