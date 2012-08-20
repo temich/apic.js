@@ -5,5 +5,5 @@
   "author"        : "Artem Gurtovoy <tema.gurtovoy@gmail.com>",
   "repositiry"    : { "type": "git", "url": "https://temich@github.com/temich/apic.js.git" },
   "contributors"  : [],
-  "version"       : "0.1.5"
+  "version"       : "0.1.6"
 }
