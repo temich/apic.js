@@ -78,13 +78,8 @@
 		<xsl:if test="following-sibling::*">,</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="wadl:representation[@x:name and @x:name != 'error']">
-		<xsl:value-of select="@x:name"/>
-		<xsl:apply-templates select="wadl:param[@x:variable]"/>
-	</xsl:template>
-
-	<xsl:template match="wadl:representation[not(@x:name)]">
-		<xsl:value-of select="wadl:param[@required='true' and not(@style='header')]/@name"/>
+	<xsl:template match="wadl:representation">
+		<xsl:value-of select="wadl:param[not(@style='header')]/@name"/>
 		<xsl:apply-templates select="wadl:param[@x:variable]"/>
 	</xsl:template>
 
