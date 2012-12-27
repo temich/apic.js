@@ -20,7 +20,7 @@ if (!program.wadl || !program.output) {
 
 var input = path.resolve(process.cwd(), program.wadl),
     output = path.resolve(process.cwd(), program.output),
-    xslt = path.resolve(__dirname, '../tools/convert.xsl');
+    xslt = path.resolve(__dirname, '../xsl/convert.xsl');
 
 if (!fs.existsSync(input)) {
     console.error('WADL file not found');
