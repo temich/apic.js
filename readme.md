@@ -20,3 +20,20 @@ Create your api module
 	    descriptior = require('./descriptor');
 		
 	return apic(descriptor);
+
+Use it
+
+	var api = require('api');
+	
+	api.users.get({ select: 50, omit: 100}, function(err, users) {
+	  console.log(users);
+	});
+	/*
+	GET http://{baseUri}/users?select=50&omit=100
+	*/
+
+	api.users.post({ name: 'John', age: 32 });
+	/*
+	POST http://{baseUri}/users
+	{ "name": "John", "age": 32 }
+	*/
