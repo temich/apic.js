@@ -1,4 +1,4 @@
-if (typeof define !== 'function') {
+/*if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
@@ -18,10 +18,9 @@ var context = requirejs.config({
 });
 
 exports.testSomethig = function(test) {
-    var t = context('apic');
-
+    var t = context('transport');
     console.log(t);
 
     test.ok(true, 'all ok');
     test.done();
-};
+}; */

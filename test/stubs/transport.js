@@ -1,10 +1,8 @@
-if (typeof define !== 'function') {
-    var define = require('amdefine')(module);
-}
+if (typeof define !== 'function') {  var define = require('amdefine')(module); }
 
-define(function(require, exports) {
+define('transport', function(require, exports) {
 
-    console.log('stub');
+    console.log('stub1234');
 
     exports.request = function(options, callback) {
 		console.log('j');
