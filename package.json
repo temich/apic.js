@@ -15,6 +15,7 @@
   },
   "dependencies" : {
     "commander": "*",
-    "amdefine": "*"
+    "amdefine": "*",
+    "requirejs": "*"
   }
 }
