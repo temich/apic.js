@@ -12,6 +12,10 @@ Current early version is a CommonJS module (RequireJS compatible) with jquery de
 ##Usage
 Convert your WADL spec to javascript module
 
+	node /path/to/apic.js/bin/apic -w your.wadl -o descriptor.js
+	
+If you installed apic.js globally
+
 	apic -w your.wadl -o descriptor.js
 	
 Create your api module
