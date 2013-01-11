@@ -5,6 +5,10 @@ Describe your REST API using [WADL](http://www.w3.org/Submission/wadl/) and get 
 
 Current early version is a CommonJS module (RequireJS compatible) with jquery dependency.
 
+##Requirements
+
+[xsltproc](http://www.sagehill.net/docbookxsl/InstallingAProcessor.html)
+
 ##Installation
 
 	npm install apic.js
