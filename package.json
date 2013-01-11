@@ -1,6 +1,6 @@
 {
   "name"          : "apic.js",
-  "version"       : "0.4.7",
+  "version"       : "0.4.8",
   "description"   : "REST API JavaScript Client Generator",
   "keywords"      : ["js", "WADL", "api", "client", "REST"],
   "author"        : "Artem Gurtovoy <tema.gurtovoy@gmail.com>",
