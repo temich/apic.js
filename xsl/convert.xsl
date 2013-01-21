@@ -111,10 +111,19 @@
 				<xsl:value-of select="@x:alias"/>
 			</xsl:when>
 			<xsl:when test="@path">
-				<xsl:value-of select="@path"/>
+                <xsl:choose>
+                    <xsl:when test="substring(@path, 2, 1)='*'">
+                        <xsl:text>{</xsl:text>
+                        <xsl:value-of select="substring(@path, 3, string-length(@path) - 3)"/>
+                        <xsl:text>}</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@path"/>
+                    </xsl:otherwise>
+                </xsl:choose>
 			</xsl:when>
 			<xsl:when test="@name">
-				<xsl:value-of select="@name"/>
+                <xsl:value-of select="@name"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
