@@ -4,9 +4,9 @@
   "description"   : "REST API JavaScript Client Generator",
   "keywords"      : ["js", "WADL", "api", "client", "REST"],
   "author"        : "Artem Gurtovoy <tema.gurtovoy@gmail.com>",
-  "repositiry"    : {
+  "repository"    : {
     "type": "git",
-	"url": "https://temich@github.com/temich/apic.js.git"
+    "url": "https://temich@github.com/temich/apic.js.git"
   },
   "contributors"  : ["Burlak Ilia <i.l.burlak@gmail.com>"],
   "main"          : "./lib/apic.js",
