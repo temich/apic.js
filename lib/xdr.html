@@ -5,7 +5,7 @@
     function handle(e) {
         e = e || event;
 
-        var source = e.source,
+        var source = parent || e.source,
             origin = e.origin;
 
         var data = JSON.parse(e.data),
