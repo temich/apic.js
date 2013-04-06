@@ -50,8 +50,10 @@
             id: id,
             type: 'xdr',
             status: req.status || 0,
+            statusText: req.statusText || '',
             response: req.responseText,
-            headers: headers
+            headers: headers,
+            xhr: req
         }), origin);
     }
 
