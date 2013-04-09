@@ -5,7 +5,7 @@
     function handle(e) {
         e = e || event;
 
-        var source = e.source,
+        var source = parent || e.source,
             origin = e.origin;
 
         var data = JSON.parse(e.data),
@@ -50,6 +50,7 @@
             id: id,
             type: 'xdr',
             status: req.status || 0,
+            statusText: req.statusText || '',
             response: req.responseText,
             headers: headers
         }), origin);
