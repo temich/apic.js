@@ -1,4 +1,4 @@
-#apic.js � REST API JavaScript Client Generator
+#REST API JavaScript Client Generator
 
 ##About
 Describe your REST API using [WADL](http://www.w3.org/Submission/wadl/) and get complete JavaScript client.
