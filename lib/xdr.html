@@ -13,6 +13,16 @@
             options = data.req,
             req = new XMLHttpRequest();
 
+        /**
+         * IE8 and lower violates Section 9 of RFC 2616 and support only a certain list of HTTP methods
+         * GET, POST, HEAD, PUT, DELETE, MOVE, PROPFIND, PROPPATCH, MKCOL, COPY, LOCK, UNLOCK, OPTIONS
+         *
+         * Thus API implementation MUST consider PROPPATCH method as synonym for PATCH
+         */
+        if (options.method === 'PATCH') {
+            options.method = 'PROPPATCH';
+        }
+
         req.open(options.method, options.uri);
 
         if (options.headers) {
