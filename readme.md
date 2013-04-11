@@ -1,9 +1,7 @@
-#apic.js — REST API JavaScript Client Generator
+#REST API JavaScript Client Generator
 
 ##About
 Describe your REST API using [WADL](http://www.w3.org/Submission/wadl/) and get complete JavaScript client.
-
-Current early version is a CommonJS module (RequireJS compatible) with jquery dependency.
 
 ##Requirements
 
