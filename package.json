@@ -13,7 +13,10 @@
   "bin"           : {
       "apic": "./bin/apic"
   },
-  "dependencies" : {
+  "scripts"       : {
+	"test": "nodeunit test"
+  },
+  "dependencies"  : {
     "commander": "*",
     "amdefine": "*"
   }
