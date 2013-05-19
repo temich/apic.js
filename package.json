@@ -18,6 +18,7 @@
   },
   "dependencies"  : {
     "commander": "*",
-    "amdefine": "*"
+    "amdefine": "*",
+	"nodeunit": "*"
   }
 }
