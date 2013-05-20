@@ -14,7 +14,7 @@
             req = new XMLHttpRequest();
 
         /**
-         * IE8 and lower violates Section 9 of RFC 2616 and support only a certain list of HTTP methods
+         * IE8 and lower violates Section 9 of RFC 2616 by supporting only a certain list of HTTP methods
          * GET, POST, HEAD, PUT, DELETE, MOVE, PROPFIND, PROPPATCH, MKCOL, COPY, LOCK, UNLOCK, OPTIONS
          *
          * Thus API implementation MUST consider PROPPATCH method as synonym for PATCH
@@ -58,7 +58,7 @@
 
         source.postMessage(JSON.stringify({
             id: id,
-            type: 'xdr',
+            type: 'cor',
             status: req.status || 0,
             statusText: req.statusText || '',
             response: req.responseText,
