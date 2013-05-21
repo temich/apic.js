@@ -61,10 +61,18 @@ define(function (require, exports) {
         var aaf = new AAF(exampleScheme, exampleParams);
 
         aaf.update({ realm: 'new value'});
-        exampleParams.realm = 'new value';
 
-        test.deepEqual(aaf.params, exampleParams);
+        test.equal(aaf.params.realm, 'new value');
         test.notEqual(aaf.toString(), exampleStr);
+        test.done();
+    };
+
+    exports['update without scheme should not affect auth-scheme'] = function (test) {
+        var aaf = new AAF(exampleScheme, exampleParams);
+
+        aaf.update({ realm: 'new value'});
+
+        test.equal(aaf.scheme, exampleScheme);
         test.done();
     };
 
