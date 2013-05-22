@@ -32,25 +32,24 @@ define(function (require, exports) {
     };
 
     exports.common['auth-params should be supported'] = function (test) {
-        api.authorize('SomeScheme', { token: '123'});
+        api.authorize('SomeScheme', { token: 'token-value'});
 
-        test.equals(api.authorize(), 'SomeScheme token="123"');
+        test.equals(api.authorize(), 'SomeScheme token="token-value"');
         test.done();
     };
 
     exports.common['realm should be set'] = function (test) {
-        api.authorize('SomeScheme', { token: '123'});
+        api.authorize('SomeScheme', { token: 'token-value'});
         api.authorize.realm('realm-name');
 
-        test.equals(api.authorize(), 'SomeScheme token="123", realm="realm-name"');
+        test.equals(api.authorize(), 'SomeScheme token="token-value", realm="realm-name"');
         test.done();
     };
 
-    exports.common['realm setting order should not matter'] = function (test) {
-        api.authorize.realm('realm-name');
-        api.authorize('SomeScheme', { token: '123'});
+    exports.common['realm method should without arguments return current realm value'] = function (test) {
+        api.authorize('SomeScheme', { token: 'token-value', realm: 'realm-name'});
 
-        test.equals(api.authorize(), 'SomeScheme realm="realm-name", token="123"');
+        test.equals(api.authorize.realm(), 'realm-name');
         test.done();
     };
 
@@ -62,6 +61,14 @@ define(function (require, exports) {
         api.unauthorize();
 
         test.equals(api.authorize(), undefined);
+        test.done();
+    };
+
+    exports.common['scheme update should reset auth-params'] = function (test) {
+        api.authorize('SomeScheme', { token: 'token-value', realm: 'realm-name' });
+        api.authorize('Token', { token: 'new-value' });
+
+        test.equals(api.authorize(), 'Token token="new-value"');
         test.done();
     };
 
