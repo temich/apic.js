@@ -53,6 +53,18 @@ define(function (require, exports) {
         test.done();
     };
 
+    exports.common['realm method should return undefined when no realm set'] = function (test) {
+        test.equals(api.authorize.realm(), undefined, 'no auth-param');
+
+        api.authorize('SomeScheme', { token: 'token-value'});
+        test.equals(api.authorize.realm(), undefined, 'auth-params object');
+
+        api.authorize('SomeScheme', 'token-value');
+        test.equals(api.authorize.realm(), undefined, 'auth-params string');
+
+        test.done();
+    };
+
     exports.common['unauthorize should clear authorization'] = function (test) {
         api.authorize('SomeScheme some-token');
 
