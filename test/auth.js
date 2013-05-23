@@ -46,7 +46,7 @@ define(function (require, exports) {
         test.done();
     };
 
-    exports.common['realm method should without arguments return current realm value'] = function (test) {
+    exports.common['realm method without arguments should return current realm value'] = function (test) {
         api.authorize('SomeScheme', { token: 'token-value', realm: 'realm-name'});
 
         test.equals(api.authorize.realm(), 'realm-name');

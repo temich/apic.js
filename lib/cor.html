@@ -26,13 +26,15 @@
         req.open(options.method, options.uri);
 
         if (options.headers) {
+
             for (var name in options.headers) {
                 req.setRequestHeader(name, options.headers[name]);
             }
+
         }
 
-        req.onreadystatechange = function()
-        {
+        req.onreadystatechange = function() {
+
             if (req.readyState !== 4) {
                 return;
             }
@@ -49,7 +51,7 @@
             headers = {},
             _;
 
-        lines = head.split('\n');
+        lines = head.replace(/\r\n/g, '\n').split('\n');
 
         for (var i = lines.length; i--; ) {
             _ = lines[i].split(': ');
@@ -64,6 +66,7 @@
             response: req.responseText,
             headers: headers
         }), origin);
+
     }
 
     window.onmessage = handle;
