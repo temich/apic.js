@@ -27,23 +27,23 @@ define(function (require, exports) {
     exports['ctor should parse parameters object'] = function (test) {
         var aaf = new AAF(exampleScheme, exampleParams);
 
-        test.equals(aaf.toString(), exampleStr);
+        test.strictEqual(aaf.toString(), exampleStr);
         test.done();
     };
 
     exports['ctor should parse parameters string'] = function (test) {
         var aaf = new AAF('Basic', 'dGVzdDp0ZXN0');
 
-        test.equals(aaf.scheme, 'Basic');
-        test.equals(aaf.params, 'dGVzdDp0ZXN0');
-        test.equals(aaf.toString(), 'Basic dGVzdDp0ZXN0');
+        test.strictEqual(aaf.scheme, 'Basic');
+        test.strictEqual(aaf.params, 'dGVzdDp0ZXN0');
+        test.strictEqual(aaf.toString(), 'Basic dGVzdDp0ZXN0');
         test.done();
     };
 
     exports['ctor should parse authorization string'] = function (test) {
         var aaf = new AAF(exampleStr);
 
-        test.equals(aaf.scheme, exampleScheme, 'scheme');
+        test.strictEqual(aaf.scheme, exampleScheme, 'scheme');
         test.deepEqual(aaf.params, exampleParams, 'params');
         test.done();
     };
@@ -51,7 +51,7 @@ define(function (require, exports) {
     exports['ctor without arguments sould be supported'] = function (test) {
         var aaf = new AAF();
 
-        test.equal(aaf.scheme, undefined);
+        test.strictEqual(aaf.scheme, undefined);
         test.equal(aaf.params, undefined);
         test.equal(aaf.toString(), undefined);
         test.done();
@@ -79,16 +79,16 @@ define(function (require, exports) {
     exports['raw authorization should be supported'] = function (test) {
         var aaf = new AAF('Basic dGVzdDp0ZXN0');
 
-        test.equals(aaf.scheme, 'Basic', 'scheme');
-        test.equals(aaf.params, 'dGVzdDp0ZXN0', 'param');
-        test.equals(aaf.toString(), 'Basic dGVzdDp0ZXN0', 'authorization string');
+        test.strictEqual(aaf.scheme, 'Basic', 'scheme');
+        test.strictEqual(aaf.params, 'dGVzdDp0ZXN0', 'param');
+        test.strictEqual(aaf.toString(), 'Basic dGVzdDp0ZXN0', 'authorization string');
         test.done();
     };
 
     exports['basic authorization should be supported'] = function (test) {
         var aaf = new AAF('Basic', 'dGVzdDp0ZXN0'); // base64 encoded 'test:test'
 
-        test.equals(aaf.toString(), 'Basic dGVzdDp0ZXN0');
+        test.strictEqual(aaf.toString(), 'Basic dGVzdDp0ZXN0');
         test.done();
     };
 
@@ -97,9 +97,9 @@ define(function (require, exports) {
 
         aaf.update('Basic', 'dGVzdDp0ZXN0');
 
-        test.equals(aaf.scheme, 'Basic');
-        test.equals(aaf.params, 'dGVzdDp0ZXN0');
-        test.equals(aaf.toString(), 'Basic dGVzdDp0ZXN0');
+        test.strictEqual(aaf.scheme, 'Basic');
+        test.strictEqual(aaf.params, 'dGVzdDp0ZXN0');
+        test.strictEqual(aaf.toString(), 'Basic dGVzdDp0ZXN0');
         test.done();
     };
 
@@ -108,8 +108,8 @@ define(function (require, exports) {
 
         aaf.update('Basic', { realm: 'test' });
 
-        test.equals(aaf.params.realm, 'test');
-        test.equals(aaf.toString(), 'Basic realm="test"');
+        test.strictEqual(aaf.params.realm, 'test');
+        test.strictEqual(aaf.toString(), 'Basic realm="test"');
         test.done();
     };
 
