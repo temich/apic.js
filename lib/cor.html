@@ -48,8 +48,17 @@
     function respond(source, origin, id, req) {
         var head = req.getAllResponseHeaders(),
             lines,
+            status = req.status,
+            statusText = req.statusText,
             headers = {},
             _;
+
+        
+        // Normalize IE 1223 error to 204 response
+        if (status === 1223) {
+            status = 204;
+            statusText = 'No Content';
+        }
 
         lines = head.replace(/\r\n/g, '\n').split('\n');
 
