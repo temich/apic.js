@@ -5,9 +5,11 @@
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:x="urn:ito:xwadl"
                 xmlns:wadl="http://wadl.dev.java.net/2009/02"
-                xmlns="http://wadl.dev.java.net/2009/02">
+                xmlns="http://wadl.dev.java.net/2009/02"												xmlns:config="urn:ito:routing">
 
 	<xsl:output method="text" encoding="UTF-8" media-type="text/plain"/>
+
+	<xsl:param name="app" select="app"/>
 
 	<xsl:template match="/">
 		<xsl:apply-templates select="wadl:application/wadl:resources"/>
@@ -25,7 +27,22 @@
 	</xsl:template>
 
 	<xsl:template match="wadl:resource">
-		<xsl:text>"</xsl:text>
+								<xsl:variable name="feature">
+			<xsl:if test="normalize-space(string-length(@config:include)) > 0">
+				<xsl:value-of select="concat(',', @config:include, ',')" />
+			</xsl:if>
+		</xsl:variable>
+
+		<xsl:variable name="found-feature">
+			<xsl:if test="$app">
+				<xsl:for-each select="document(concat('../../../src/apps/', $app, '.xml'))/config/features/*">
+					<xsl:if test="contains($feature, concat(',', name(.), ','))"><xsl:value-of select="name(.)" /></xsl:if>
+				</xsl:for-each>
+			</xsl:if>
+		</xsl:variable>
+
+		<xsl:if test="string-length($found-feature) > 0 or normalize-space(string-length($feature)) = 0">
+			<xsl:text>"</xsl:text>
 		<xsl:call-template name="name"/>
 		<xsl:text>":{</xsl:text>
 		<xsl:if test="@x:alias">
@@ -40,6 +57,11 @@
 		<xsl:if test="position() != last()">
 			<xsl:text>,</xsl:text>
 		</xsl:if>
+	</xsl:if>
+
+	</xsl:template>
+
+	<xsl:template match="*">
 	</xsl:template>
 
 	<xsl:template match="wadl:resource[@type = 'transparent']">
