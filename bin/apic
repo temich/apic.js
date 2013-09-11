@@ -8,9 +8,10 @@ var fs = require('fs'),
 
 program
     .version(package.version)
-    .usage('-w <input> -o <output>')
+    .usage('-w <input> -o <output> -app <name>')
     .option('-w, --wadl <path>', 'source WADL file')
     .option('-o, --output <path>', 'target descriptor file')
+    .option('-c, --config <name>', 'application config')
     .parse(process.argv);
 
 if (!program.wadl || !program.output) {
@@ -20,6 +21,7 @@ if (!program.wadl || !program.output) {
 
 var input = path.resolve(process.cwd(), program.wadl),
     output = path.resolve(process.cwd(), program.output),
+    application = program.application,
     xslt = path.resolve(__dirname, '../xsl/convert.xsl');
 
 if (!fs.existsSync(input)) {
@@ -27,7 +29,7 @@ if (!fs.existsSync(input)) {
     process.exit(1);
 }
 
-var cmd = 'xsltproc --nonet --xinclude --novalid --noout --output ' + output + ' ' + xslt + ' ' + input;
+var cmd = 'xsltproc --nonet --xinclude --novalid --noout ' + (application ? ('--stringparam config ' + config + ' ') : '') + '--output ' + output + ' ' + xslt + ' ' + input;
 
 cp.exec(cmd, { cwd: __dirname }, function(err, stdout, stderr) {
     if (err) {
