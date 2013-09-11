@@ -5,11 +5,12 @@
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:x="urn:ito:xwadl"
                 xmlns:wadl="http://wadl.dev.java.net/2009/02"
-                xmlns="http://wadl.dev.java.net/2009/02"												xmlns:config="urn:ito:routing">
+                xmlns="http://wadl.dev.java.net/2009/02"
+				xmlns:config="urn:ito:routing">
 
 	<xsl:output method="text" encoding="UTF-8" media-type="text/plain"/>
 
-	<xsl:param name="app" select="app"/>
+	<xsl:param name="config" select="config"/>
 
 	<xsl:template match="/">
 		<xsl:apply-templates select="wadl:application/wadl:resources"/>
@@ -27,37 +28,46 @@
 	</xsl:template>
 
 	<xsl:template match="wadl:resource">
-								<xsl:variable name="feature">
-			<xsl:if test="normalize-space(string-length(@config:include)) > 0">
-				<xsl:value-of select="concat(',', @config:include, ',')" />
-			</xsl:if>
+
+		<xsl:variable name="feature-friendly">
+			<xsl:variable name="include">
+				<xsl:if test="normalize-space(string-length(@config:include)) > 0">
+					<xsl:value-of select="concat(',', @config:include, ',')" />
+				</xsl:if>
+			</xsl:variable>
+			<xsl:variable name="exclude">
+				<xsl:if test="normalize-space(string-length(@config:exclude)) > 0">
+					<xsl:value-of select="concat(',', @config:exclude, ',')" />
+				</xsl:if>
+			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="$config">
+					<xsl:for-each select="document($config)/config/features/*">
+						<xsl:if test="(normalize-space(string-length($include)) = 0 or contains($include, concat(',', name(.), ',')))
+							and not(contains($exclude, concat(',', name(.), ',')))">true</xsl:if>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:otherwise></xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="found-feature">
-			<xsl:if test="$app">
-				<xsl:for-each select="document(concat('../../../src/apps/', $app, '.xml'))/config/features/*">
-					<xsl:if test="contains($feature, concat(',', name(.), ','))"><xsl:value-of select="name(.)" /></xsl:if>
-				</xsl:for-each>
+		<xsl:if test="$feature-friendly = 'true'">
+			<xsl:text>"</xsl:text>
+			<xsl:call-template name="name"/>
+			<xsl:text>":{</xsl:text>
+			<xsl:if test="@x:alias">
+				<xsl:text>"@":"</xsl:text>
+				<xsl:value-of select="@path"/>
+				<xsl:text>"</xsl:text>
+				<xsl:if test="count(wadl:method) or count(wadl:resource)">,</xsl:if>
 			</xsl:if>
-		</xsl:variable>
-
-		<xsl:if test="string-length($found-feature) > 0 or normalize-space(string-length($feature)) = 0">
-			<xsl:text>"</xsl:text>
-		<xsl:call-template name="name"/>
-		<xsl:text>":{</xsl:text>
-		<xsl:if test="@x:alias">
-			<xsl:text>"@":"</xsl:text>
-			<xsl:value-of select="@path"/>
-			<xsl:text>"</xsl:text>
-			<xsl:if test="count(wadl:method) or count(wadl:resource)">,</xsl:if>
+			<xsl:apply-templates select="wadl:method"/>
+			<xsl:apply-templates select="wadl:resource"/>
+			<xsl:text>}</xsl:text>
+			<xsl:if test="position() != last()">
+				<xsl:text>,</xsl:text>
+			</xsl:if>
 		</xsl:if>
-		<xsl:apply-templates select="wadl:method"/>
-		<xsl:apply-templates select="wadl:resource"/>
-		<xsl:text>}</xsl:text>
-		<xsl:if test="position() != last()">
-			<xsl:text>,</xsl:text>
-		</xsl:if>
-	</xsl:if>
 
 	</xsl:template>
 
