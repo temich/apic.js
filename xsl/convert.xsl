@@ -75,7 +75,7 @@
 			<xsl:value-of select="@name"/>
 			<xsl:text>"</xsl:text>
 		</xsl:if>
-		<xsl:if test="following-sibling::*">,</xsl:if>
+		<xsl:if test="count(following-sibling::wadl:method)or count(following-sibling::wadl:resource)">,</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="wadl:representation">
