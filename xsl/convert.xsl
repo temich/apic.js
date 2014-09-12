@@ -59,7 +59,7 @@
 				<xsl:text>*</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:if test="not(@name='GET')">
+				<xsl:if test="not(@name='GET') and not(@name='HEAD')">
 					<xsl:text>*</xsl:text>
 				</xsl:if>
 			</xsl:otherwise>
