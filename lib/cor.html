@@ -53,13 +53,6 @@
             lines,
             _;
 
-        
-        // Normalize IE 1223 error to 204 response
-        if (status === 1223) {
-            status = 204;
-            statusText = 'No Content';
-        }
-
         lines = head.replace(/\r\n/g, '\n').split('\n');
 
         for (var i = lines.length; i--; ) {
