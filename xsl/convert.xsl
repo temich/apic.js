@@ -64,7 +64,13 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:apply-templates select="ancestor::wadl:resource/wadl:param|wadl:request/wadl:param[@required='true']"/>
+
+        <!-- writes "@caching" trait to wadl:method -->
+        <xsl:if test="count(wadl:response/x:caching)">
+            <xsl:text>@caching</xsl:text>
+        </xsl:if>
+
+        <xsl:apply-templates select="ancestor::wadl:resource/wadl:param|wadl:request/wadl:param[@required='true']"/>
 		<xsl:text>":"</xsl:text>
 		<xsl:apply-templates select="wadl:response[substring(@status, 1, 1)='2']/wadl:representation"/>
 		<xsl:text>"</xsl:text>
