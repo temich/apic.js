@@ -65,8 +65,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 
-        <!-- writes "@caching" trait to wadl:method -->
-        <xsl:if test="count(wadl:response/x:caching)">
+        <!-- writes "@caching" to `wadl:method` definition when `wadl:response/x:caching` element exist -->
+        <xsl:if test="(wadl:response/x:caching) and ((@name='GET') or (@name='HEAD'))">
             <xsl:text>@caching</xsl:text>
         </xsl:if>
 
@@ -81,7 +81,7 @@
 			<xsl:value-of select="@name"/>
 			<xsl:text>"</xsl:text>
 		</xsl:if>
-		<xsl:if test="count(following-sibling::wadl:method)or count(following-sibling::wadl:resource)">,</xsl:if>
+		<xsl:if test="count(following-sibling::wadl:method) or count(following-sibling::wadl:resource)">,</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="wadl:representation">
