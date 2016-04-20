@@ -1,6 +1,6 @@
 {
   "name": "apic.js",
-  "version": "0.8.19",
+  "version": "0.9.0",
   "description": "REST API JavaScript Client Generator",
   "keywords": [
     "js",
@@ -15,7 +15,8 @@
     "url": "https://temich@github.com/temich/apic.js.git"
   },
   "contributors": [
-    "Burlak Ilia <i.l.burlak@gmail.com>"
+    "Burlak Ilia <i.l.burlak@gmail.com>",
+	"Vladimir Gridasov <ascbfgwewe@gmail.com>"
   ],
   "main": "./lib/apic.js",
   "bin": {
