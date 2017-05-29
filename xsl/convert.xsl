@@ -64,7 +64,13 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:apply-templates select="ancestor::wadl:resource/wadl:param|wadl:request/wadl:param[@required='true']"/>
+
+        <!-- writes "@caching" to `wadl:method` definition when `wadl:response/x:caching` element exist -->
+        <xsl:if test="(wadl:response/x:caching) and ((@name='GET') or (@name='HEAD'))">
+            <xsl:text>@caching</xsl:text>
+        </xsl:if>
+
+        <xsl:apply-templates select="ancestor::wadl:resource/wadl:param|wadl:request/wadl:param[@required='true']"/>
 		<xsl:text>":"</xsl:text>
 		<xsl:apply-templates select="wadl:response[substring(@status, 1, 1)='2']/wadl:representation"/>
 		<xsl:text>"</xsl:text>
@@ -75,7 +81,7 @@
 			<xsl:value-of select="@name"/>
 			<xsl:text>"</xsl:text>
 		</xsl:if>
-		<xsl:if test="count(following-sibling::wadl:method)or count(following-sibling::wadl:resource)">,</xsl:if>
+		<xsl:if test="count(following-sibling::wadl:method) or count(following-sibling::wadl:resource)">,</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="wadl:representation">
