@@ -1,6 +1,6 @@
 {
   "name": "apic.js",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "REST API JavaScript Client Generator",
   "keywords": [
     "js",
